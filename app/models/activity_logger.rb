@@ -1,0 +1,2 @@
+class ActivityLogger < ApplicationRecord
+end

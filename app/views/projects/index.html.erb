@@ -1,0 +1,65 @@
+<% content_for :title, "Projects" %>
+<div class="bg-gray-50 mx-auto mt-5">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-center mb-6">
+      <h1 class="text-3xl font-bold text-gray-800">Projects</h1>
+    </div>
+
+    <% if notice.present? %>
+    <div class="mb-6">
+      <div class="p-4 bg-teal-100 text-teal-700 rounded-md">
+        <%= notice %>
+      </div>
+    </div>
+    <% end %>
+
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+      <% if @projects.any? %>
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Title
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Description
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Status
+            </th>
+            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <% @projects.each do |project| %>
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+              <%= project.title %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <%= truncate(project.description, length: 50) %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <%= project.status.humanize %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+              <div class="flex justify-center space-x-2">
+                <%= link_to "Show", project, class: "px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition" %>
+                <%= link_to "Edit", edit_project_path(project), class: "px-3 py-1 bg-teal-600 hover:bg-teal-700 text-white rounded-md transition" %>
+                <%= link_to "Delete", project, data: { turbo_method: :delete, confirm: "Are you sure?" }, class: "px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md transition" %>
+              </div>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <% else %>
+      <div class="p-6">
+        <p class="text-center text-gray-500">No projects found.</p>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -3,5 +3,7 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  resources :projects
+  resources :projects do
+    resources :comments, only: [:create, :update, :destroy]
+  end
 end

@@ -50,7 +50,8 @@ class ProjectsController < ApplicationController
 
   def fetch_conversation_logs
     status_logs = fetch_status_logs
-    status_logs.sort_by { |entry| entry[:created_at] }.reverse
+    comment_logs = fetch_comment_logs
+    (status_logs + comment_logs).sort_by { |entry| entry[:created_at] }.reverse
   end
 
   def fetch_status_logs
@@ -63,6 +64,20 @@ class ProjectsController < ApplicationController
           action: log.action,
           previous_value: log.previous_value,
           new_value: log.new_value,
+          created_at: log.created_at
+        }
+      end
+  end
+
+  def fetch_comment_logs
+    comment_ids = @project.comments.pluck(:id)
+    ActivityLogger
+      .where(trackable_type: "Comment", trackable_id: comment_ids, field_name: "content")
+      .order(:created_at)
+      .map do |log|
+        {
+          type: "comment",
+          content: log.new_value,
           created_at: log.created_at
         }
       end

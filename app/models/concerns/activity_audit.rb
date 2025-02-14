@@ -38,13 +38,13 @@ module ActivityAudit
         trackable: self,
         action: action,
         field_name: field,
-        previous_value: value_for(:previous, field, value_type),
-        new_value: value_for(:new, field, value_type)
+        previous_value: value_for(:previous, field, action),
+        new_value: value_for(:new, field, action)
       )
     end
   end
 
-  def value_for(action, field, value_type)
+  def value_for(value_type, field, action)
     mapping = {
       previous: {
         create: -> { nil },
